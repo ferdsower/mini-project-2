@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Heroes List</title>
+	<style>
+		table, th, td {
+			border: 1px solid black;
+			border-collapse: collapse;
+		}
+		th, td {
+			padding: 5px;
+			text-align: left;
+		}
+		.heroes-list {
+			height: 300px;
+			overflow-y: scroll;
+		}
+	</style>
+</head>
+<body>
+	<div class="heroes-list">
+		<ul id="heroes-ul"></ul>
+	</div>
+	<table id="heroes-table">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Localized Name</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+
+	<script>
+		fetch('https://raw.githubusercontent.com/kronusme/dota2-api/master/data/heroes.json')
+			.then(response => response.json())
+			.then(data => {
+				const heroesUl = document.querySelector('#heroes-ul');
+				const heroesTable = document.querySelector('#heroes-table tbody');
+
+				// Populate heroes list
+				data.heroes.forEach(hero => {
+					const li = document.createElement('li');
+					li.textContent = hero.localized_name;
+					heroesUl.appendChild(li);
+				});
+
+				// Populate heroes table
+				data.heroes.forEach(hero => {
+					const row = document.createElement('tr');
+					row.innerHTML = `
+						<td>${hero.id}</td>
+						<td>${hero.name}</td>
+						<td>${hero.localized_name}</td>
+					`;
+					heroesTable.appendChild(row);
+				});
+			})
+			.catch(error => console.log(error));
+	</script>
+</body>
+</html>
+	
+
+    
